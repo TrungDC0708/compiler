@@ -1,16 +1,17 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from buffer import Buffer
+from scanner import LexicalScanner
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    b = Buffer()
+    scanner = LexicalScanner()
+    rule = scanner.tokenize()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    token, lexeme = [], []
+    for value in b.load_file("hello.vc"):
+        t, l, r, c = scanner.analyze(value, rule)
+        token += t
+        lexeme += l
+
+    print(token)
+    print(set(lexeme))
