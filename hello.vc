@@ -1,0 +1,12 @@
+int main() {  
+    char c;
+    float f = 1.0;
+    printf("Hello");
+
+    // line comment    
+    /* block comment */
+    printf("value of c = %c", c);
+    printf("value of f = %f", f);
+    
+    return 0;
+}
