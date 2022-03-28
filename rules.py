@@ -15,7 +15,8 @@ char_rules = [
     ('PRINT', r'printf'),                   # print
     ('IDEN', r'[a-zA-Z]\w*'),               # identifiers
     ('FLOAT_CONST', r'\d(\d)*\.\d(\d)*'),   # float const
-    ('INTEGER_CONST', r'\d(\d)*'),          # int const
+    ('EFLOAT', r'[+-]?\d+?[Ee][+-]?\d+'),   # e notation float
+    ('INTEGER_CONST', r'[-+]?\d+'),         # int const
     ('NEWLINE', r'\n'),                     # new line
     ('GAP', r'[ \t]+'),                     # space and tabs
     ('INCLUDE', r'include'),                # include
@@ -24,12 +25,6 @@ char_rules = [
     ('LINECMT', r'\/\/'),                   # //
     ("LBLOCKCMT", r'\/\*'),                 # /*
     ("RBLOCKCMT", r'\*\/'),                 # */
-    ('LBRACKET', r'\('),                    # (
-    ('RBRACKET', r'\)'),                    # )
-    ('LBRACE', r'\{'),                      # {
-    ('RBRACE', r'\}'),                      # }
-    ('COMMA', r','),                        # ,
-    ('PCOMMA', r';'),                       # ;
     ('EQ', r'=='),                          # ==
     ('NE', r'!='),                          # !=
     ('LE', r'<='),                          # <=
@@ -43,5 +38,11 @@ char_rules = [
     ('MINUS', r'-'),                        # -
     ('MULT', r'\*'),                        # *
     ('DIV', r'\/'),                         # /
+    # ('LBRACKET', r'\('),                    # (
+    # ('RBRACKET', r'\)'),                    # )
+    # ('LBRACE', r'\{'),                      # {
+    # ('RBRACE', r'\}'),                      # }
+    # ('COMMA', r','),                        # ,
+    # ('PCOMMA', r';'),                       # ;
     # ('OTHER', r'.'),                        # another character
 ]
