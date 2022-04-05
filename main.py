@@ -18,5 +18,9 @@ if __name__ == '__main__':
         token += t
         lexeme += l
 
+
     print(token)
-    print(set(lexeme))
+    f = open('sample.vctok', 'w')
+    for l in set(lexeme):
+        f.write(l+"\n")
+    f.close()

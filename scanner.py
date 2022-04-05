@@ -11,17 +11,17 @@ class LexicalScanner:
 
     def analyze(self, code, token_list):
         line_start = 0
-        token, lexeme, row, column,  = [], [], [], []
+        token, lexeme, row, column, = [], [], [], []
         for i in re.finditer(token_list, code):
             ttype = i.lastgroup
             tlexeme = i.group(ttype)
 
-            if ttype == 'NEWLINE':      # new line
+            if ttype == 'NEWLINE':  # new line
                 line_start = i.end()
                 self.line_number += 1
-            elif ttype == 'GAP':        # space or tabs
+            elif ttype == 'GAP':  # space or tabs
                 continue
-            elif ttype == 'OTHER':      # unexpected character
+            elif ttype == 'OTHER':  # unexpected character
                 raise RuntimeError('unexpect %r on line %d' %
                                    (tlexeme, self.line_number))
             else:
