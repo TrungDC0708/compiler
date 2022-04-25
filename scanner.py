@@ -1,4 +1,3 @@
-import re
 from rules import *
 
 
@@ -33,52 +32,26 @@ def setType(c):
 
 
 class LexicalScanner:
+    def __init__(self, rule):
+        self.rule = rule
+        self.currentState = 0
+        self.type_list = []
+        self.token_list = []
 
-    def tokenize(self, words):
-        currentState = 0
-        print(words)
-        type_list = []
-        token_list = []
+    def tokenize(self, char):
         token = ""
-        for item in words:
+        for item in char:
             type = setType(item)
-            type_list.append([type, item])
-            nextState = (char_rules[startingState.index(str(currentState)) + 3][wType.index(type)])
+            self.type_list.append([type, item])
+            nextState = (self.rule.char_rules[self.rule.startingState.index(str(self.currentState)) + 3][self.rule.wType.index(type)])
             if nextState!= '':
-                currentState = nextState
+                self.currentState = nextState
                 token += item
             else:
-                if currentState in endingState:
-                    token_list.append(token)
+                if self.currentState in self.rule.endingState:
+                    self.token_list.append(token)
                 token = ""
-                currentState = 0
-        print(type_list)
-        print(token_list)
-        return token_list
+                self.currentState = 0
 
-    def analyze(self, code, token_list):
-        line_start = 0
-        token, lexeme, row, column, = [], [], [], []
-        for i in re.finditer(token_list, code):
-            ttype = i.lastgroup
-            tlexeme = i.group(ttype)
+        return self.token_list
 
-            if ttype == 'NEWLINE':  # new line
-                line_start = i.end()
-                self.line_number += 1
-            elif ttype == 'GAP':  # space or tabs
-                continue
-            elif ttype == 'OTHER':  # unexpected character
-                raise RuntimeError('unexpect %r on line %d' %
-                                   (tlexeme, self.line_number))
-            else:
-                col = i.start() - line_start
-                column.append(col)
-                row.append(self.line_number)
-                token.append(ttype)
-                lexeme.append(tlexeme)
-
-                print(
-                    "token = {0}, lexeme = {1}, row = {2}, column = {3}".format(ttype, tlexeme, self.line_number, col))
-
-        return token, lexeme, row, column
