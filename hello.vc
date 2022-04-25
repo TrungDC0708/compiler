@@ -6,10 +6,12 @@ float exampleFunction(boolean var1, int var2) {
 	}
 }
 
+
+
 int main() {
 	boolean b = true;
 	boolean c = !b;
-	int d = 4420;
+	int d = 1.2E+4420;
 	float r = exampleFunction(c, d);
 	return 0;
 }

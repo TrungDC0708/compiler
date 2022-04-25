@@ -1,0 +1,1 @@
+Gõ câu lệnh python main.py input.vc
