@@ -1,36 +1,57 @@
-import re
-from rules import char_rules
+from rules import *
+
+
+def setType(c):
+    a = ord(c)
+    if 97 <= a < 101 or 101 < a <= 122 or 65 <= a < 69 or 69 < a <= 90:
+        return "character"
+    elif 48 <= a <= 57:
+        return "number"
+    elif c == "<":
+        return "<"
+    elif c == ">":
+        return ">"
+    elif c == "!":
+        return "!"
+    elif c == "&":
+        return "&"
+    elif c == "+" or c == "-":
+        return "-+"
+    elif c == "*":
+        return "*"
+    elif c == ".":
+        return "."
+    elif c == "=":
+        return "="
+    elif c == "e" or c == "E":
+        return "eE"
+    elif c == "|":
+        return "|"
+    else:
+        return "other"
 
 
 class LexicalScanner:
-    line_number = 1
+    def __init__(self, rule):
+        self.rule = rule
+        self.currentState = 0
+        self.type_list = []
+        self.token_list = []
 
-    def tokenize(self):
-        token_list = '|'.join('(?P<%s>%s)' % c for c in char_rules)
-        return token_list
-
-    def analyze(self, code, token_list):
-        line_start = 0
-        token, lexeme, row, column,  = [], [], [], []
-        for i in re.finditer(token_list, code):
-            ttype = i.lastgroup
-            tlexeme = i.group(ttype)
-
-            if ttype == 'NEWLINE':      # new line
-                line_start = i.end()
-                self.line_number += 1
-            elif ttype == 'GAP':        # space or tabs
-                continue
-            elif ttype == 'OTHER':      # unexpected character
-                raise RuntimeError('unexpect %r on line %d' %
-                                   (tlexeme, self.line_number))
+    def tokenize(self, char):
+        token = ""
+        for item in char:
+            type = setType(item)
+            self.type_list.append([type, item])
+            nextState = (self.rule.char_rules[self.rule.startingState.index(str(self.currentState)) + 3][self.rule.wType.index(type)])
+            if nextState!= '':
+                self.currentState = nextState
+                token += item
             else:
-                col = i.start() - line_start
-                column.append(col)
-                row.append(self.line_number)
-                token.append(ttype)
-                lexeme.append(tlexeme)
+                if self.currentState in self.rule.endingState:
+                    self.token_list.append(token)
+                token = ""
+                self.currentState = 0
 
-                print("token = {0}, lexeme = {1}, row = {2}, column = {3}".format(ttype, tlexeme, self.line_number, col))
+        return self.token_list
 
-        return token, lexeme, row, column
